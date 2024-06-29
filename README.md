@@ -1,5 +1,9 @@
 # Watchr
 
+<p align="center">
+    <img src="https://github.com/PKT-Watch/watchr-extension/blob/main/assets/app-store-branding.png?raw=true">
+</p>
+
 ## About
 
 Watchr is a portfolio tracker browser extension specifically for the PKT Cash blockchain. Track balance, mining income and transactions for any wallet address.
