@@ -1,6 +1,7 @@
 #!/bin/bash
 platform="firefox"
 directory="./dist/${platform}"
+mkdir -p $directory
 cp -R ./extension/ $directory
 
 # Firefox requires a different manifest file
