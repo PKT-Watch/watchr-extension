@@ -29,7 +29,7 @@ Firefox
 
 ## Installation from source
 
-The following commands will create a `dist` directory in the root of the project. Within the `dist` directory, a directory containing the unpacked extension for your chosen platform will be created along with a zip file that can be uploaded to your webstore of choice.
+The following commands will create a `dist` directory in the root of the project. Within the `dist` directory, a directory containing the unpacked extension for your chosen platform will be created.
 
 To build both Chromium and Firefox:
 
