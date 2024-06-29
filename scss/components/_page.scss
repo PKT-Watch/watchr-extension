@@ -1,0 +1,33 @@
+.page {
+    padding: var(--padding) var(--padding-lg);
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    scrollbar-width: none; // Firefox
+
+    &.offscreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(100%);
+        transition: all .35s ease;
+        display: none;
+
+        &.active {
+            transform: translateX(0);
+        }
+
+        .loaded & {
+            display: flex;
+        }
+    }
+}
+
+.page-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}

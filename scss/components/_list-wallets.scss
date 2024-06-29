@@ -1,0 +1,47 @@
+.list-wallets {
+    .list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg-page);
+        gap: var(--padding-sm);
+        cursor: pointer;
+
+        +.list-item {
+            margin-top: var(--padding-lg);
+        }
+    }
+
+    .info {
+        min-width: 0; // Fix text-overflow: ellipsis
+
+        .label {
+            margin-bottom: var(--padding-xs);
+            font-weight: var(--font-weight-bold);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .address {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+    }
+
+    .balance {
+        text-align: right;
+        
+        .pkt {
+            color: var(--text-primary);
+            font-weight: var(--font-weight-bold);
+            white-space: nowrap;
+        }
+
+        .usd {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+    }
+}

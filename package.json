@@ -1,0 +1,15 @@
+{
+  "name": "watchr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-chrome": "bash ./scripts/build-chrome.sh",
+    "build-firefox": "bash ./scripts/build-firefox.sh",
+    "build": "npm run build-chrome && npm run build-firefox"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watchr</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <div style="height: 0; width: 0; position: absolute; visibility: hidden">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <symbol id="svg-add" viewBox="0 -960 960 960" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></symbol>
+            <symbol id="svg-chevron-left" viewBox="0 -960 960 960" fill="currentColor"><path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z"/></symbol>
+            <symbol id="svg-delete" viewBox="0 -960 960 960" fill="currentColor"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></symbol>
+            <symbol id="svg-more" viewBox="0 -960 960 960" fill="currentColor"><path d="M240-400q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm240 0q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm240 0q-33 0-56.5-23.5T640-480q0-33 23.5-56.5T720-560q33 0 56.5 23.5T800-480q0 33-23.5 56.5T720-400Z"/></symbol>
+            <symbol id="svg-open" viewBox="0 -960 960 960" fill="currentColor"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"/></symbol>
+            <symbol id="svg-edit" viewBox="0 -960 960 960" fill="currentColor"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></symbol>
+            <symbol id="svg-copy" viewBox="0 -960 960 960" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></symbol>
+            <symbol id="svg-menu" viewBox="0 -960 960 960" fill="currentColor"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></symbol>
+            <symbol id="svg-qr" viewBox="0 -960 960 960" fill="currentColor"><path d="M520-120v-80h80v80h-80Zm-80-80v-200h80v200h-80Zm320-120v-160h80v160h-80Zm-80-160v-80h80v80h-80Zm-480 80v-80h80v80h-80Zm-80-80v-80h80v80h-80Zm360-280v-80h80v80h-80ZM180-660h120v-120H180v120Zm-60 60v-240h240v240H120Zm60 420h120v-120H180v120Zm-60 60v-240h240v240H120Zm540-540h120v-120H660v120Zm-60 60v-240h240v240H600Zm80 480v-120h-80v-80h160v120h80v80H680ZM520-400v-80h160v80H520Zm-160 0v-80h-80v-80h240v80h-80v80h-80Zm40-200v-160h80v80h80v80H400Zm-190-90v-60h60v60h-60Zm0 480v-60h60v60h-60Zm480-480v-60h60v60h-60Z"/></symbol>
+        </svg>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div class="page" id="page-dashboard">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" id="btnOpenDrawer">
+                    <svg class="icon"><use href="#svg-menu"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                <div id="current-portfolio-name">Main Portfolio</div>
+            </div>
+            <div class="trailing">
+                <button type="button" id="btnCreateWallet">
+                    <svg class="icon"><use href="#svg-add"></use></svg>
+                </button>
+            </div>
+        </div>
+        <div class="balance-header">
+            <div class="title">Balance</div>
+            <div class="balance"><div class="loader light"></div></div>
+            <div class="usd">$0.00</div>
+        </div>
+        <div id="list-wallets" class="list-wallets"></div>
+    </div>
+
+    <div class="page offscreen" id="page-wallet-details">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                <div id="current-wallet-name"></div>
+            </div>
+            <div class="trailing">
+                <div class="dropdown">
+                    <button type="button" class="dropdown-button">
+                        <svg class="icon"><use href="#svg-more"></use></svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <button type="button" id="btnWalletDetails_OpenExplorer">
+                                <svg class="icon"><use href="#svg-open"></use></svg> Explorer
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="btnWalletDetails_OpenMiningStats">
+                                <svg class="icon"><use href="#svg-open"></use></svg> Mining Stats
+                            </button>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <button type="button" id="btnWalletDetails_EditLabel">
+                                <svg class="icon"><use href="#svg-edit"></use></svg> Edit Label
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="btnWalletDetails_Delete" class="text-danger">
+                                <svg class="icon"><use href="#svg-delete"></use></svg> Delete
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="balance-header">
+            <div class="title">Balance</div>
+            <div class="balance">0.00</div>
+            <dvi class="usd">$0.00</dvi>
+        </div>
+        <div class="address-bar clipboard-copy">
+            <div class="address"></div>
+            <div class="hidden-address clipboard-copy-value" style="display: none;"></div>
+            <div class="trailing">
+                <button type="button" id="btnCopyAddress" class="clipboard-copy-button">
+                    <svg class="icon"><use href="#svg-copy"></use></svg>
+                </button>
+                <button type="button" id="btnQrCode">
+                    <svg class="icon"><use href="#svg-qr"></use></svg>
+                </button>
+            </div>
+        </div>
+        
+        <div class="stat-grid">
+            <div class="stat-item">
+                <div class="title">Mined Last 24hr</div>
+                <div class="value mined-24">0.00</div>
+            </div>
+            <div class="stat-item">
+                <div class="title">Unconsolidated</div>
+                <div class="value unconsolidated">0</div>
+            </div>
+        </div>
+        <div>
+            <div class="chart-title">30 day mining income</div>
+            <div class="chart-container">
+                <canvas id="chart-mining-income"></canvas>
+            </div>
+        </div>
+        <div class="panel transaction-list-container">
+            <div class="panel-header">Latest transactions</div>
+            <div class="panel-body">
+                <div class="list-transactions"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page offscreen" id="page-add-address">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                New Address
+            </div>
+            <div class="trailing"></div>
+        </div>
+        <div class="page-content">
+            <div class="form-group">
+                <label for="inputAddress">Address</label>
+                <input type="text" id="txtAddWallet_Address" placeholder="Enter a PKT address">
+            </div>
+            <div class="form-group">
+                <label for="inputLabel">Label</label>
+                <input type="text" id="txtAddWallet_Label" placeholder="Give this address a name">
+            </div>
+            <div class="form-group">
+                <label for="inputLabel">Portfolio</label>
+                <select id="ddlAddWallet_Portfolio"></select>
+            </div>
+        </div>
+        <div class="page-footer">
+            <button type="button" id="btnAddWallet" class="btn btn-primary btn-block btn-lg">Add address</button>
+        </div>
+    </div>
+
+    <div class="page offscreen" id="page-edit-address">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                Edit Address
+            </div>
+            <div class="trailing">
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="form-group">
+                <label for="inputLabel">Label</label>
+                <input type="text" id="txtEditAddress_Label" placeholder="Give this address a name">
+            </div>
+        </div>
+        <div class="page-footer">
+            <button type="button" id="btnEditAddress" class="btn btn-primary btn-block btn-lg">Update address</button>
+        </div>
+    </div>
+
+    <div class="page offscreen" id="page-add-portfolio">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                New Portfolio
+            </div>
+            <div class="trailing"></div>
+        </div>
+        <div class="page-content">
+            <div class="form-group">
+                <label for="inputLabel">Label</label>
+                <input type="text" id="txtAddPortfolio_Label" placeholder="Give this portfolio a name">
+            </div>
+        </div>
+        <div class="page-footer">
+            <button type="button" id="btnAddPortfolio" class="btn btn-primary btn-block btn-lg">Add portfolio</button>
+        </div>
+    </div>
+
+    <div class="page offscreen" id="page-edit-portfolio">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                Edit Portfolio
+            </div>
+            <div class="trailing">
+                <button type="button" id="btnEditPortfolio_Delete">
+                    <svg class="icon"><use href="#svg-delete"></use></svg>
+                </button>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="form-group">
+                <label for="inputLabel">Label</label>
+                <input type="text" id="txtEditPortfolio_Label" placeholder="Give this portfolio a name">
+            </div>
+        </div>
+        <div class="page-footer">
+            <button type="button" id="btnEditPortfolio" class="btn btn-primary btn-block btn-lg">Update portfolio</button>
+        </div>
+    </div>
+
+    <div class="page offscreen" id="page-transaction-details">
+        <div class="page-header">
+            <div class="leading">
+                <button type="button" class="btn-page-close">
+                    <svg class="icon"><use href="#svg-chevron-left"></use></svg>
+                </button>
+            </div>
+            <div class="title">
+                
+            </div>
+            <div class="trailing">
+                <div class="dropdown">
+                    <button type="button" class="dropdown-button">
+                        <svg class="icon"><use href="#svg-more"></use></svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <button type="button" id="btnTransactionDetails_OpenExplorer">
+                                <svg class="icon"><use href="#svg-open"></use></svg> Explorer
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="page-content transaction-details">
+            <div class="transaction-header">
+                <div class="type"></div>
+                <div class="icon"></div>
+                <div class="amount">-1.00 PKT</div>
+            </div>
+            <div class="transaction-date">
+                <div class="label">Date</div>
+                <div class="date">3/13/2024 9:25 AM</div>
+            </div>
+            <div class="transaction-id">
+                <div class="label">Transaction ID</div>
+                <div class="transaction-id-bar clipboard-copy">
+                    <div class="txid"></div>
+                    <div class="hidden-txid clipboard-copy-value" style="display: none;"></div>
+                    <div class="trailing">
+                        <button type="button" class="clipboard-copy-button">
+                            <svg class="icon"><use href="#svg-copy"></use></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="label">From</div>
+                <div class="list-io list-inputs"></div>
+            </div>
+            <div>
+                <div class="label">To</div>
+                <div class="list-io list-outputs"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="drawer" class="drawer">
+        <div class="drawer-header">
+            <img src="/img/cube_icon_alt.svg" class="logo">
+        </div>
+        <div class="drawer-content">
+            <div class="portfolios-header">
+                <div class="title">Portfolios</div>
+                <div class="trailing">
+                    <button type="button" id="btnCreatePortfolio">
+                        <svg class="icon"><use href="#svg-add"></use></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="list-portfolios" class="list-portfolios"></div>
+            <button type="button" id="btnEditPortfolios" class="btn btn-bordered">Edit portfolios</button>
+        </div>
+        <div class="drawer-footer">
+            <button type="button" id="btnDrawer_PktWatch">
+                <img src="/img/pkt-watch-logo.svg" class="logo">
+                <svg class="icon"><use href="#svg-open"></use></svg>
+            </button>
+
+            <div id="app-version" class="app-version">v0.0.0</div>
+        </div>
+    </div>
+    
+    <script src="/js/vendors/chart.umd.js"></script>
+    <script src="/js/vendors/qrcode.min.js"></script>
+    <script type="module" src="js/pages/popup.js"></script>
+</body>
+</html>

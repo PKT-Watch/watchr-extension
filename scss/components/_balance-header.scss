@@ -1,0 +1,18 @@
+.balance-header {
+    margin-bottom: var(--padding-lg);
+    
+    .title {
+        color: var(--color-primary);
+    }
+    .balance {
+        font-size: var(--font-size-xl);
+        height: 33px;
+        font-weight: var(--font-weight-bold);
+        margin: var(--padding-sm) 0;
+    }
+    .usd {
+        color: var(--color-primary);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-bold);
+    }
+}

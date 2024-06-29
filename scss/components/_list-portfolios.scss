@@ -1,0 +1,55 @@
+.list-portfolios {
+    margin-bottom: var(--padding);
+    margin-left: calc(var(--padding-sm) * -1);
+    margin-right: calc(var(--padding-sm) * -1);
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--padding-sm) var(--padding-sm);
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+        cursor: pointer;
+
+        + .list-item {
+            margin-top: var(--padding-sm);
+        }
+
+        &:hover {
+            background: var(--hover-color);
+        }
+
+        .title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trailing {
+            img {
+                display: block;
+                height: 17px;
+            }
+        }
+    }
+
+    &.edit-mode {
+        .list-item {
+            .trailing {
+                img {
+                    display: none;
+                }
+
+                &::after {
+                    content: "";
+                    display: block;
+                    width: 17px;
+                    height: 17px;
+                    background: url(/img/icon-edit.svg) no-repeat center;
+                    background-size: cover;
+                }
+            }
+        }
+    }
+}

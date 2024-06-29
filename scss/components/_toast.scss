@@ -1,0 +1,62 @@
+#toast-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+.toast {
+    padding: var(--padding);
+    text-align: center;
+    transform: translateY(100%);
+    transition: var(--transition);
+    background: var(--color-grey-dark);
+    color: #FFF;
+    box-shadow: 0 0 30px rgba(0,0,0,0);
+
+    &.error {
+        background: var(--color-danger);
+    }
+
+    &.qr-code {
+        background: var(--panel-bg-color);
+        padding: var(--padding-lg);
+        border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+        color: var(--text-dark);
+
+        > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .address {
+            margin-top: var(--padding);
+            word-break: break-all;
+        }
+    }
+
+    &.active {
+        transform: translateY(0);
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+
+    // &.overlay {
+    //     box-shadow: 0 0 1000px rgba(0, 0, 0, .5); 
+    // }
+}
+
+.toast-overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: var(--transition);
+
+    &.active {
+        background: rgba(0, 0, 0, .5);
+    }
+}

@@ -1,0 +1,31 @@
+.form-group {
+    label {
+        display: block;
+        margin-bottom: 0.75rem;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        padding: var(--padding);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        background: var(--bg-page);
+        color: var(--text-color);
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    select {
+        width: 100%;
+        padding: var(--padding);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        background: var(--bg-page);
+        color: var(--text-color);
+    }
+}

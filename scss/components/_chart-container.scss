@@ -1,0 +1,25 @@
+.chart-container {
+    height: 120px;
+    position: relative;
+
+    &.no-data {
+        &::after {
+            content: 'No mining data';
+            background: var(--bg-page);
+            border-radius: 1000px;
+            padding: var(--padding-sm) var(--padding);
+            color: var(--text-muted);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+.chart-title {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-bottom: var(--padding);
+}

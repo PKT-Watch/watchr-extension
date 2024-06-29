@@ -1,0 +1,37 @@
+button {
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+
+    img {
+        display: block;
+    }
+}
+
+.btn {
+    padding: var(--padding-sm) var(--padding);
+    border-radius: var(--border-radius);
+}
+
+.btn-bordered {
+    display: inline-block;  
+    border: 1px solid var(--border-color);
+    color: var(--color-primary);
+}
+
+.btn-primary {
+    background: var(--color-primary);
+    color: var(--text-color);
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+.btn-lg {
+    padding: var(--padding) var(--padding-lg);
+    font-size: 16px;
+}

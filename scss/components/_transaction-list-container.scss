@@ -1,0 +1,54 @@
+.transaction-list-container {
+    margin-top: var(--padding-lg);
+    flex: 1;
+
+    .list-transactions {
+        flex: 1;
+        margin: 0 calc(var(--padding) * -1);
+
+        .loader {
+            margin: 0 auto;
+        }
+
+        .empty-message {
+            text-align: center;
+
+            &::after {
+                content: 'No transactions';
+                background: var(--hover-color);
+                border-radius: 1000px;
+                padding: var(--padding-sm) var(--padding);
+            }
+        }
+    }
+
+    .list-item {
+        display: flex;
+        align-items: center;
+        gap: var(--padding-sm);
+        //margin-bottom: var(--padding);
+        padding: var(--padding);
+        cursor: pointer;
+
+        .icon {
+            img {
+                display: block;
+                width: 20px;
+            }
+        }
+
+        .date {
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin-top: var(--padding-xs);
+        }
+
+        .value {
+            margin-left: auto;
+        }
+
+        &:hover {
+            background: var(--hover-color);
+        }
+    }
+}

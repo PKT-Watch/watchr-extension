@@ -1,0 +1,14 @@
+node_modules/
+dist/
+
+# MacOS
+.DS_Store
+.AppleDouble
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets

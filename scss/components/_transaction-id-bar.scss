@@ -1,0 +1,23 @@
+.transaction-id-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-muted);
+    margin-bottom: var(--padding);
+    gap: var(--padding-sm);
+
+    .txid {
+        color: var(--text-color);
+        word-break: break-all;
+    }
+
+    .trailing {
+        display: flex;
+        
+        img, svg {
+            display: block;
+            width: 16px;
+            height: 16px;
+        }
+    }
+}

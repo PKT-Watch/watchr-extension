@@ -1,0 +1,26 @@
+.list-io {
+    .list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--padding-sm);
+
+        + .list-item {
+            margin-top: var(--padding-sm);
+        }
+
+        .address {
+            word-break: break-all;
+        }
+
+        .trailing {
+            display: flex;
+        
+            img, svg {
+                display: block;
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+.empty-portfolio-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-lg);
+    gap: var(--padding-lg);
+    height: 300px;
+}

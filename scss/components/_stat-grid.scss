@@ -1,0 +1,24 @@
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: var(--padding);
+    margin-top: var(--padding);
+    margin-bottom: var(--padding);
+
+    .stat-item {
+        background: var(--color-grey-dark);
+        padding: var(--padding);
+        text-align: center;
+        border-radius: var(--border-radius-lg);
+
+        .title {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+            margin-bottom: var(--padding-xs);
+        }
+
+        .value {
+            font-size: var(--font-size-lg);
+        }
+    }
+}
