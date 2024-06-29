@@ -60,3 +60,11 @@ Click the 'Load Temporary Add-on' button.
 Select the `manifest.json` file located in the `/dist/firefox` directory.  
 
 *nb. Firefox will remove temporary add-ons when the browser is closed.*
+
+## Modifying the source
+
+The CSS for this project is compiled from SCSS files found in the [scss](scss) directory. You will need a Sass compiler if you wish to modify the CSS. The compiled file should be named `main.css` and be located in the [extension/css](extension/css) directory.
+
+All JavaScript can be found in the [extension/js](extension/js) directory. The project makes heavy use of ES6 modules. These can be found in the [extension/js/modules](extension/js/modules) directory.
+
+There are two manifest files located in the extension directory. `manifest.json` is the Chromium version. `manifest.firefox.json` is the Firefox version (this file will be copied and renamed to `manifest.json` when packaged using the build commands specified above).
