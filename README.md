@@ -1,4 +1,4 @@
-# Watchr
+# Watchr - Browser Extension
 
 <p align="center">
     <img src="https://github.com/PKT-Watch/watchr-extension/blob/main/assets/app-store-branding.png?raw=true">
