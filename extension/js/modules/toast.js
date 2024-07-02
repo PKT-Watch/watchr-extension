@@ -4,7 +4,7 @@ function showToast(options) {
     options = options || {};
     options.message = options.message || 'There was an error';
     options.type = options.type || 'error';
-    options.autoClose = typeof options.autoClose === 'undefined' ? false : options.autoClose;
+    options.autoClose = typeof options.autoClose === 'undefined' ? true : options.autoClose;
     options.html = options.html || null;
     options.overlay = typeof options.overlay === 'undefined' ? false : options.overlay;
 

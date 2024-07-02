@@ -224,6 +224,7 @@ button img {
   padding: var(--padding-sm) var(--padding);
   background: var(--hover-color);
   text-align: center;
+  font-size: var(--font-size-sm);
 }
 .drawer .btn-bordered {
   display: block;
