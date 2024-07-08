@@ -36,6 +36,11 @@
             color: var(--text-primary);
             font-weight: var(--font-weight-bold);
             white-space: nowrap;
+
+            > span {
+                display: flex;
+                gap: var(--padding-xs);
+            }
         }
 
         .usd {

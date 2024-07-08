@@ -96,6 +96,10 @@ body {
   font-weight: var(--font-weight-bold);
   margin: var(--padding-sm) 0;
 }
+.balance-header .balance > span {
+  display: flex;
+  gap: var(--padding-sm);
+}
 .balance-header .usd {
   color: var(--color-primary);
   font-size: var(--font-size-lg);
@@ -364,8 +368,11 @@ button img {
   text-overflow: ellipsis;
 }
 .list-portfolios .list-item .trailing img {
-  display: block;
+  display: none;
   height: 17px;
+}
+.list-portfolios .list-item.selected .trailing img {
+  display: block;
 }
 .list-portfolios.edit-mode .list-item .trailing img {
   display: none;
@@ -411,6 +418,10 @@ button img {
   color: var(--text-primary);
   font-weight: var(--font-weight-bold);
   white-space: nowrap;
+}
+.list-wallets .balance .pkt > span {
+  display: flex;
+  gap: var(--padding-xs);
 }
 .list-wallets .balance .usd {
   font-size: var(--font-size-sm);

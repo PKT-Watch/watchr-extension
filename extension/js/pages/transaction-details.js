@@ -1,5 +1,5 @@
-import { showPage, hidePage } from '/js/modules/page.js';
-import { formatAddress, unitsToPkt, numberWithCommas } from '/js/modules/utils.js';
+import { showPage } from '/js/modules/page.js';
+import { unitsToPktEl } from '/js/modules/utils.js';
 
 const pageEl = document.getElementById('page-transaction-details');
 const transationHeaderEl = pageEl.querySelector('.transaction-header');
@@ -12,6 +12,7 @@ const txidHiddenEl = pageEl.querySelector('.hidden-txid');
 const listInputsEl = pageEl.querySelector('.list-inputs');
 const listOutputsEl = pageEl.querySelector('.list-outputs');
 const btnTransactionDetails_OpenExplorer = document.getElementById('btnTransactionDetails_OpenExplorer');
+const templateIoListItem = document.getElementById('template-io-list-item');
 
 let transaction;
 let wallet;
@@ -35,38 +36,43 @@ async function updateUI() {
 function buildIOList(ios, listEl) {
     listEl.innerHTML = '';
     ios.forEach(io => {
-        listEl.insertAdjacentHTML('beforeend', `
-            <div class="list-item">
-                <div class="address">
-                    ${ io.address }
-                </div>
-                <div class="trailing">
-                    <!--${ io.address === wallet.address ? '' : `<button type="button" class="btn-add-address" data-address="${io.address}"><svg class="icon"><use href="#svg-add"></use></svg></button>` }-->
-                </div>
-            </div>
-        `);
+        const listItemClone = templateIoListItem.content.cloneNode(true);
+        listItemClone.querySelector('.address').textContent = io.address;
+        listEl.appendChild(listItemClone);
     });
 }
 
 function buildTransactionHeader() {
     transationHeaderEl.classList = 'transaction-header';
+    transactionTypeEl.innerHTML = '';
+    transactionAmountEl.innerHTML = '';
+    transactionIconEl.innerHTML = '';
+    const iconElement = document.createElement('img');
+
     if (transaction.blockTime == null) {
-        transactionTypeEl.innerHTML = '';
-        transactionIconEl.innerHTML =  '<img src="/img/icon-update.svg">';
+        iconElement.src = '/img/icon-update.svg';
+        transactionIconEl.appendChild(iconElement);
+
     } else if (transaction.isFolding) {
-        transactionTypeEl.innerHTML = 'Folding';
-        transactionAmountEl.innerHTML = '';
-        transactionIconEl.innerHTML = '<img src="/img/icon-fold.svg">';
+        transactionTypeEl.textContent = 'Folding';
+        iconElement.src = '/img/icon-fold.svg';
+        transactionIconEl.appendChild(iconElement);
+
     } else if (transaction.isSend) {
         transationHeaderEl.classList.add('sent');
-        transactionTypeEl.innerHTML = 'Sent';
-        transactionAmountEl.innerHTML = `-${unitsToPkt(transaction.value, 2, true)}`;
-        transactionIconEl.innerHTML =  '<img src="/img/icon-circle-minus.svg">';
+        transactionTypeEl.textContent = 'Sent';
+        transactionAmountEl.textContent = '-';
+        transactionAmountEl.appendChild(unitsToPktEl(transaction.value, 2, true));
+        iconElement.src = '/img/icon-circle-minus.svg';
+        transactionIconEl.appendChild(iconElement);
+
     } else {
         transationHeaderEl.classList.add('received');
-        transactionTypeEl.innerHTML = 'Received';
-        transactionAmountEl.innerHTML = `+${unitsToPkt(transaction.value, 2, true)}`;
-        transactionIconEl.innerHTML =  '<img src="/img/icon-circle-plus.svg">';
+        transactionTypeEl.textContent = 'Received';
+        transactionAmountEl.textContent = '+';
+        transactionAmountEl.appendChild(unitsToPktEl(transaction.value, 2, true));
+        iconElement.src = '/img/icon-circle-plus.svg';
+        transactionIconEl.appendChild(iconElement);
     }
 }
 

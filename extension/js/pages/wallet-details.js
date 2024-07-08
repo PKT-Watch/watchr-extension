@@ -1,6 +1,6 @@
 import { getWallet, deleteWallet } from '/js/modules/wallet.js';
 import { showPage, hidePage } from '/js/modules/page.js';
-import { formatAddress, unitsToPkt, numberWithCommas } from '/js/modules/utils.js';
+import { formatAddress, unitsToPkt, unitsToPktEl, numberWithCommas } from '/js/modules/utils.js';
 import { fetchWallet, fetchWalletMiningIncome, fetchWalletTransactions } from '/js/modules/api.js';
 import { buildDashboard } from '/js/modules/dashboard.js';
 import { showEditAddress } from '/js/pages/edit-address.js';
@@ -20,6 +20,7 @@ const btnWalletDetails_OpenMiningStats = document.getElementById('btnWalletDetai
 const btnWalletDetails_EditLabel = document.getElementById('btnWalletDetails_EditLabel');
 const btnWalletDetails_Delete = document.getElementById('btnWalletDetails_Delete');
 const btnQrCode = document.getElementById('btnQrCode');
+const templateTransactionListItem = document.getElementById('template-transaction-list-item');
 
 let chart;
 const chartColors = {
@@ -34,13 +35,17 @@ async function showWalletDetails(address, portfolioId) {
     wallet = await getWallet(address, portfolioId);
     const walletDetails = await fetchWallet(address);
     chartMiningIncomeEl.parentElement.classList.remove('no-data');
-    listTransactionsEl.innerHTML = '<div class="loader"></div>';
+    const loaderEl = document.createElement('div');
+    loaderEl.classList.add('loader');
+    listTransactionsEl.innerHTML = '';
+    listTransactionsEl.appendChild(loaderEl);
     showPage('page-wallet-details');
     updateUI(walletDetails);
 }
 
 async function updateUI(walletDetails) {
-    totalBalanceEl.innerHTML = `${unitsToPkt(wallet.pkt, 2, true)}`;
+    totalBalanceEl.innerHTML = '';
+    totalBalanceEl.appendChild(unitsToPktEl(wallet.pkt, 2, true));
     totalUsdEl.textContent = `$${numberWithCommas(wallet.usd)}`;
     updateCurrentWalletName(wallet.label);
     addressBarEl.querySelector('.address').textContent = formatAddress(wallet.address);
@@ -99,46 +104,45 @@ async function buildTransactionList(address) {
     transactions = await fetchWalletTransactions(address);
     
     if (transactions.length === 0) {
-        listTransactionsEl.innerHTML = '<div class="empty-message"></div>';
+        const emptyMessageEl = document.createElement('div');
+        emptyMessageEl.classList.add('empty-message');
+        listTransactionsEl.appendChild(emptyMessageEl);
         return;
     }
 
     listTransactionsEl.innerHTML = '';
     transactions.forEach(transaction => {
-        listTransactionsEl.insertAdjacentHTML('beforeend', `
-            <div class="list-item" data-id="${transaction.txid}">
-                <div class="icon">
-                    ${ buildTransactionIcon(transaction) }
-                </div>
-                <div class="info">
-                    ${ 
-                        transaction.isFolding ? 'Folding' :
-                        transaction.isSend ? 
-                        formatAddress(transaction.output.find((element) => element.address != address).address) :
-                        formatAddress(transaction.input[0].address)
-                    }
-                    <div class="date">${new Date(transaction.firstSeen).toLocaleString()}</div>
-                </div>
-                    ${
-                        transaction.isFolding ? '<div class="value">--</div>' :
-                        transaction.isSend ? `<div class="value text-danger">-${numberWithCommas(unitsToPkt(transaction.value, 2, false))}</div>` :
-                        `<div class="value text-success">+${numberWithCommas(unitsToPkt(transaction.value, 2, false))}</div>`
-                    }
-            </div>
-        `);
+        const listItemClone = templateTransactionListItem.content.cloneNode(true);
+        const listItemEl = listItemClone.querySelector('.list-item');
+        listItemEl.dataset.id = transaction.txid;
+        listItemEl.querySelector('.icon').appendChild(buildTransactionIcon(transaction));
+        listItemEl.querySelector('.address').textContent = transaction.isFolding ? 'Folding' : transaction.isSend ? formatAddress(transaction.output.find((element) => element.address != address).address) : formatAddress(transaction.input[0].address);
+        listItemEl.querySelector('.date').textContent = new Date(transaction.firstSeen).toLocaleString();
+        if (transaction.isFolding) {
+            listItemEl.querySelector('.value').textContent = '--';
+        } else if (transaction.isSend) {
+            listItemEl.querySelector('.value').textContent = `-${numberWithCommas(unitsToPkt(transaction.value, 2, false))}`;
+            listItemEl.querySelector('.value').classList.add('text-danger');
+        } else {
+            listItemEl.querySelector('.value').textContent = `+${numberWithCommas(unitsToPkt(transaction.value, 2, false))}`;
+            listItemEl.querySelector('.value').classList.add('text-success');
+        }
+        listTransactionsEl.appendChild(listItemEl);
     });
 }
 
 function buildTransactionIcon(transaction) {
+    const imgEl = document.createElement('img');
     if (transaction.blockTime == null) {
-        return '<img src="/img/icon-update.svg">';
+        imgEl.src = '/img/icon-update.svg';
     } else if (transaction.isFolding) {
-        return '<img src="/img/icon-fold.svg">';
+        imgEl.src = '/img/icon-fold.svg';
     } else if (transaction.isSend) {
-        return '<img src="/img/icon-circle-minus.svg">';
+        imgEl.src = '/img/icon-circle-minus.svg';
     } else {
-        return '<img src="/img/icon-circle-plus.svg">';
+        imgEl.src = '/img/icon-circle-plus.svg';
     }
+    return imgEl;
 }
 
 async function buildMiningIncomeChart(address) {

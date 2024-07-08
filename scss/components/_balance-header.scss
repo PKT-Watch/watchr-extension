@@ -9,6 +9,11 @@
         height: 33px;
         font-weight: var(--font-weight-bold);
         margin: var(--padding-sm) 0;
+
+        > span {
+            display: flex;
+            gap: var(--padding-sm);
+        }
     }
     .usd {
         color: var(--color-primary);

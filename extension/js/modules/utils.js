@@ -50,4 +50,67 @@ const numberWithCommas = (value, decimals) => {
     return value.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export { formatAddress, unitsToPkt, numberWithCommas };
+// Returns a Node
+const unitsToPktEl = (units, decimals, formatted) => {   
+    const pkt = units / 1024 / 1024 / 1024;
+
+    if (formatted === false) {
+        const el = document.createElement('span');
+
+        if (typeof decimals !== 'undefined' && decimals > 0) {
+            el.textContent = pkt.toFixed(decimals);
+        } else {
+            el.textContent = pkt;
+        }
+
+        return el;
+    }
+
+    return pktToDenominationEl(pkt, decimals);
+}
+
+// Returns a Node
+const pktToDenominationEl = (pkt, decimals) => {
+    const el = document.createElement('span');
+    const pktEl = document.createElement('span');
+    const unitsEl = document.createElement('span');
+    unitsEl.classList.add('units');
+
+    if (typeof decimals === 'undefined' && Number(pkt) < 1) {
+        pktEl.textContent = '0.00';
+        unitsEl.textContent = 'PKT';
+        
+    } else {
+        decimals = isNaN(decimals) ? 0 : decimals;
+        pkt = Number(pkt);
+        let fa;
+        let u = UNITS[0];
+        let i = 0;
+        do {
+            fa = pkt * UNITS[i][1];
+            u = UNITS[i];
+            i++;
+        } while (fa < 1 && u[0] !== 'nPKT')
+        const str = numberWithCommas(fa, decimals);
+        const intDec = str.split('.');
+        if (parseInt(intDec[0]) === 0 && parseInt(intDec[1]) === 0) {
+            pktEl.textContent = '0.00';
+            unitsEl.textContent = 'PKT';
+        }
+
+        if (intDec.length > 1) {
+            pktEl.textContent = `${intDec[0]}.${intDec[1]}`;
+            unitsEl.textContent = u[0];
+        } else {
+            pktEl.textContent = intDec[0];
+            unitsEl.textContent = u[0];
+        }
+    }
+
+    el.appendChild(pktEl);
+    el.appendChild(unitsEl);
+    return el;
+    
+}
+
+export { formatAddress, unitsToPkt, unitsToPktEl, numberWithCommas };

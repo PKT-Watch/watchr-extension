@@ -28,8 +28,16 @@
 
         .trailing {
             img {
-                display: block;
+                display: none;
                 height: 17px;
+            }
+        }
+
+        &.selected {
+            .trailing {
+                img {
+                    display: block;
+                }
             }
         }
     }

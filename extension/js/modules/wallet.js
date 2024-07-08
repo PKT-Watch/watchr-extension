@@ -26,7 +26,7 @@ async function updateWallets(wallets) {
 
 async function deleteWallet(address, portfolioId) {
     let wallets = await getWallets();
-    wallets = wallets.filter(wallet => wallet.address !== address && wallet.portfolio_id === portfolioId);
+    wallets = wallets.filter(wallet => (wallet.address !== address || wallet.portfolio_id !== portfolioId));
     await storeWallets(wallets);
 }
 

@@ -1,13 +1,12 @@
 import { storage, getWallet, getWallets, updateWallets } from '/js/modules/wallet.js';
 import { getPortfolio, getPortfolios, updatePortfolios } from '/js/modules/portfolio.js';
-import { formatAddress, unitsToPkt, numberWithCommas } from '/js/modules/utils.js';
+import { formatAddress, unitsToPkt, unitsToPktEl, numberWithCommas } from '/js/modules/utils.js';
 import { fetchWalletBalances, fetchPrice } from '/js/modules/api.js';
-import { showPage } from '/js/modules/page.js';
 import { closeDrawer } from '/js/modules/drawer.js';
 import { showWalletDetails } from '/js/pages/wallet-details.js';
 import { showCreateWallet } from '/js/pages/create-wallet.js';
 import { showCreatePortfolio } from '/js/pages/create-portfolio.js';
-import Sortable from '/js/vendors/sortable.js';
+//import Sortable from '/js/vendors/sortable.js';
 
 const listWalletsEl = document.getElementById('list-wallets');
 const listPotfoliosEl = document.getElementById('list-portfolios');
@@ -16,6 +15,9 @@ const totalUsdEl = document.querySelector('.balance-header .usd');
 const currentPortfolioNameEl = document.getElementById('current-portfolio-name');
 const btnCreateWallet = document.getElementById('btnCreateWallet');
 const btnCreatePortfolio = document.getElementById('btnCreatePortfolio');
+const templateWalletListIem = document.getElementById('template-wallet-list-item');
+const templatePortfolioListItem = document.getElementById('template-portfolio-list-item');
+const templateEmptyPortfoliomessage = document.getElementById('template-empty-portfolio-message');
 
 btnCreateWallet.addEventListener('click', () => {
   showCreateWallet();
@@ -72,39 +74,49 @@ async function updatePortfolioOrder() {
 }
 
 function buildWalletList(wallets, loading) {
-    listWalletsEl.innerHTML = '';
+    const items = [];
     wallets.sort((a,b) => a.order - b.order);
     wallets.forEach(wallet => {
-      listWalletsEl.insertAdjacentHTML('beforeend', `
-          <div class="list-item" data-address="${wallet.address}" data-portfolio="${wallet.portfolio_id}">
-            <div class="info">
-              <div class="label">${wallet.label}</div>
-              <div class="address">${formatAddress(wallet.address)}</div>
-            </div>
-            <div class="balance">
-              ${loading ? '<div class="loader"></div>' : `
-                <div class="pkt">${unitsToPkt(wallet.pkt, 2, true)}</div>
-                <div class="usd">$${numberWithCommas(wallet.usd)}</div>
-              `}
-            </div>
-          </div>
-        `);
+      const listItemClone = templateWalletListIem.content.cloneNode(true);
+      const listItemEl = listItemClone.querySelector('.list-item');
+      listItemEl.dataset.address = wallet.address;
+      listItemEl.dataset.portfolio = wallet.portfolio_id;
+      listItemEl.querySelector('.label').textContent = wallet.label;
+      listItemEl.querySelector('.address').textContent = formatAddress(wallet.address);
+      const pktEl = listItemEl.querySelector('.pkt');
+      const usdEl = listItemEl.querySelector('.usd');
+      const loadingEl = listItemEl.querySelector('.loader');
+      pktEl.appendChild(unitsToPktEl(wallet.pkt, 2, true));
+      usdEl.textContent = `$${numberWithCommas(wallet.usd)}`;
+      if (loading) {
+        pktEl.style.display = 'none';
+        usdEl.style.display = 'none';
+        loadingEl.style.display = 'block';
+      } else {
+        pktEl.style.display = 'block';
+        usdEl.style.display = 'block';
+        loadingEl.style.display = 'none';
+      }
+      items.push(listItemEl);
     });
+
+    listWalletsEl.replaceChildren(...items);
 }
 
 function buildPortfolioList(portfolios, selectedPortfolioId) {
-    listPotfoliosEl.innerHTML = '';
-    //portfolios.sort((a,b) => a.order - b.order);
+    const items = [];
     portfolios.forEach(portfolio => {
-        listPotfoliosEl.insertAdjacentHTML('beforeend', `
-          <div class="list-item" data-id="${portfolio.id}">
-            <div class="title">${portfolio.label}</div>
-            <div class="trailing">
-                ${portfolio.id === selectedPortfolioId ? '<img src="/img/icon-tick.svg" alt="Selected">' : ''}
-            </div>
-          </div>
-        `);
+        const listItemClone = templatePortfolioListItem.content.cloneNode(true);
+        const listItemEl = listItemClone.querySelector('.list-item');
+        listItemEl.dataset.id = portfolio.id;
+        listItemEl.querySelector('.title').textContent = portfolio.label;
+        if (portfolio.id === selectedPortfolioId) {
+          listItemEl.classList.add('selected');
+        }
+        items.push(listItemEl);
     });
+
+    listPotfoliosEl.replaceChildren(...items);
 }
 
 async function updateBalances(wallets, portfolio) {
@@ -118,7 +130,7 @@ async function updateBalances(wallets, portfolio) {
       wallet.usd = (unitsToPkt(balance.balance, 0, false) * price).toFixed(2);
       totalBalance += parseInt(balance.balance);
     });
-    totalBalanceEl.innerHTML = `${unitsToPkt(totalBalance, 2, true)}`;
+    totalBalanceEl.replaceChildren(unitsToPktEl(totalBalance, 2, true));
     totalUsdEl.textContent = `$${(numberWithCommas(unitsToPkt(totalBalance, 0, false) * price))}`;
     storage.set({ total_balance: totalBalance });
     storage.set({ price: price });
@@ -143,9 +155,10 @@ async function buildDashboard(overrideReloadBalances) {
     currentPortfolioNameEl.textContent = portfolio.label;
   
     if (wallets.length === 0) {
-      totalBalanceEl.innerHTML = '0.00';
-      totalUsdEl.innerHTML = '$0.00';
-      listWalletsEl.innerHTML = '<div class="empty-portfolio-message"><div>No addresses yet</div><button type="button" class="btn btn-primary">Add an address</button></div>';
+      totalBalanceEl.replaceChildren(document.createTextNode('0.00'));
+      totalUsdEl.replaceChildren(document.createTextNode('$0.00'));
+      const emptyPortfolioMessageClone = templateEmptyPortfoliomessage.content.cloneNode(true);
+      listWalletsEl.replaceChildren(emptyPortfolioMessageClone);
       listWalletsEl.querySelector('button').addEventListener('click', () => {
         showCreateWallet();
       });
@@ -161,7 +174,7 @@ async function buildDashboard(overrideReloadBalances) {
     } else {
       const totalBalance = portfolio.pkt;
       const price = (await storage.get('price')).price;
-      totalBalanceEl.innerHTML = `${unitsToPkt(totalBalance, 2, true)}`;
+      totalBalanceEl.replaceChildren(unitsToPktEl(totalBalance, 2, true));
       totalUsdEl.textContent = `$${(numberWithCommas(unitsToPkt(totalBalance, 0, false) * price))}`;
     }
 }

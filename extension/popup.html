@@ -320,9 +320,55 @@
             <div id="app-version" class="app-version">v0.0.0</div>
         </div>
     </div>
+
+    <template id="template-wallet-list-item">
+        <div class="list-item" data-address="" data-portfolio="">
+            <div class="info">
+              <div class="label"></div>
+              <div class="address"></div>
+            </div>
+            <div class="balance">
+                <div class="loader"></div>
+                <div class="pkt"></div>
+                <div class="usd"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-portfolio-list-item">
+        <div class="list-item" data-id="">
+            <div class="title"></div>
+            <div class="trailing">
+                <img src="/img/icon-tick.svg" alt="Selected">
+            </div>
+        </div>
+    </template>
+
+    <template id="template-io-list-item">
+        <div class="list-item">
+            <div class="address"></div>
+            <div class="trailing"></div>
+        </div>
+    </template>
+
+    <template id="template-transaction-list-item">
+        <div class="list-item" data-id="">
+            <div class="icon"></div>
+            <div class="info">
+                <div class="address"></div>
+                <div class="date"></div>
+            </div>
+            <div class="value"></div>
+        </div>
+    </template>
+
+    <template id="template-empty-portfolio-message">
+        <div class="empty-portfolio-message"><div>No addresses yet</div><button type="button" class="btn btn-primary">Add an address</button></div>
+    </template>
     
     <script src="/js/vendors/chart.umd.js"></script>
     <script src="/js/vendors/qrcode.min.js"></script>
+    <script src="/js/vendors/sortable.min.js"></script>
     <script type="module" src="js/pages/popup.js"></script>
 </body>
 </html>
